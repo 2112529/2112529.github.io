@@ -13,7 +13,7 @@
 
 
 
-<title>LLMNotefile | nickleeson.com</title>
+<title>an-article-about-LLM-for-review | nickleeson.com</title>
 
 
 
@@ -196,7 +196,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">LLMNotefile</h1>
+            <h1 class="post-title">an-article-about-LLM-for-review</h1>
             
                 <div class="post-meta">
                     
@@ -205,7 +205,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">January 26, 2024&nbsp;&nbsp;19:31:14</a>
+                        Date: <a href="#">January 27, 2024&nbsp;&nbsp;15:37:17</a>
                         </span>
                     
                     
@@ -221,17 +221,27 @@
         </header>
 
         <div class="post-content">
-            <h1 id="LLM学习笔记"><a href="#LLM学习笔记" class="headerlink" title="LLM学习笔记"></a>LLM学习笔记</h1><p>今天是2024年1月26日，准备开始学习LLM相关的东西</p>
-<p>准备完成的学习任务：</p>
-<ul>
-<li>图神经网络学习</li>
-<li>开始学习基础的LLM理论</li>
+            <hr>
+<h3 id="1-分布式训练"><a href="#1-分布式训练" class="headerlink" title="1.分布式训练"></a>1.分布式训练</h3><h4 id="（1）主要问题"><a href="#（1）主要问题" class="headerlink" title="（1）主要问题"></a>（1）主要问题</h4><ul>
+<li>如何切割大模型，保证训练的有效性。主要算法是：“随机选择切割点”、“图切割算法”和“局部选择最优算法”等。<strong>关键的想法是平衡</strong></li>
+<li>如何训练子模型，保证子模型之间有效通信和协同。主要依赖于一些框架。</li>
 </ul>
-<hr>
-<p>2024年1月27日：</p>
-<p>主要是全面了解了这篇知乎文章中提到的知识</p>
-<h2 id="腾讯大模型算法实习生面试题"><a href="#腾讯大模型算法实习生面试题" class="headerlink" title="腾讯大模型算法实习生面试题"></a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/679841725">腾讯大模型算法实习生面试题</a></h2><hr>
+<h4 id="（2）多节点分布式训练主要框架"><a href="#（2）多节点分布式训练主要框架" class="headerlink" title="（2）多节点分布式训练主要框架"></a>（2）多节点分布式训练主要框架</h4><ul>
+<li>基于MPI的Horovod：分层设计，分为资源调度层、训练框架层、通信框架层、分布式策略层和对外接入api层。具体内容参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/378945019">分布式训练架构-horovod</a>、<a target="_blank" rel="noopener" href="https://github.com/pprp/SimpleCVPaperReading/blob/master/md/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E5%88%86%E5%B8%83/Horovod%E5%88%9D%E6%AD%A5.md">分布式训练框架Horovod初步学习</a></li>
+<li>基于TensorFlow的TF.distribute</li>
+<li>基于PyTorch的DDP</li>
+<li>基于MXNet的Neuron</li>
+</ul>
+<p><strong>这里我有一个想法就是是否可以借鉴计算机网络中的DV算法以及BGP协议设计的一些想法？？？</strong></p>
+<h4 id="（3）deepseed学习"><a href="#（3）deepseed学习" class="headerlink" title="（3）deepseed学习"></a>（3）deepseed学习</h4><p>参考文章：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/624412809">DeepSpeed介绍- 知乎</a></p>
+<p>核心的技术主要是zero技术（零冗余优化器），是一种内存优化技术。</p>
+<h4 id="（4）RAG学习—-检索增强生成"><a href="#（4）RAG学习—-检索增强生成" class="headerlink" title="（4）RAG学习—-检索增强生成"></a>（4）RAG学习—-检索增强生成</h4><p>个人理解其实就是使用检索到的数据加强LLM生成回答的准确性。</p>
+<p><img src="/2024/01/27/an-article-about-LLM-for-review/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20240127160602.png" alt="image-20240127160758667"></p>
+<!-- <img src="/2024/01/27/an-article-about-LLM-for-review/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20240127160602.png" class="" title="RAG框架"> -->
 
+<h4 id="（5）一个leetcode题目"><a href="#（5）一个leetcode题目" class="headerlink" title="（5）一个leetcode题目"></a>（5）一个leetcode题目</h4><p>细胞状态演变，其实就是一个矩阵中的每一个细胞状态的变化，拓展到大模型的分布式训练中其实就是每一个子模型的状态变化。</p>
+<p>思路其实很简单，<strong>直接复制原数组进行模拟</strong></p>
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4>
         </div>
 
         
@@ -245,7 +255,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://2112529.github.io/2024/01/26/LLMNotefile/">https://2112529.github.io/2024/01/26/LLMNotefile/</a></span>
+                        <span><a href="https://2112529.github.io/2024/01/27/an-article-about-LLM-for-review/">https://2112529.github.io/2024/01/27/an-article-about-LLM-for-review/</a></span>
                     </p>
                 
                 
@@ -278,10 +288,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2024/01/27/an-article-about-LLM-for-review/">an-article-about-LLM-for-review</a>
             
-            
-            <a class="next" rel="next" href="/2024/01/26/GNNote/">GNNote</a>
+            <a class="next" rel="next" href="/2024/01/26/LLMNotefile/">LLMNotefile</a>
             
         </section>
 
