@@ -13,7 +13,7 @@
 
 
 
-<title>test | nickleeson.com</title>
+<title>a-codereview-for-compiler | nickleeson.com</title>
 
 
 
@@ -196,7 +196,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">test</h1>
+            <h1 class="post-title">a-codereview-for-compiler</h1>
             
                 <div class="post-meta">
                     
@@ -205,7 +205,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">January 19, 2024&nbsp;&nbsp;21:29:19</a>
+                        Date: <a href="#">January 28, 2024&nbsp;&nbsp;14:48:24</a>
                         </span>
                     
                     
@@ -221,20 +221,33 @@
         </header>
 
         <div class="post-content">
-            <h1 id="词法分析器核心算法"><a href="#词法分析器核心算法" class="headerlink" title="词法分析器核心算法"></a>词法分析器核心算法</h1><p>给定正则表达式</p>
-<p>由正则表达式求CFG</p>
-<p>对CFG设计基于汤普森构造法 的翻译模式</p>
-<p>借助yacc工具构造程序</p>
+            <hr>
 <hr>
-<p>NFA到DFA的子集构造算法</p>
-<hr>
-<p>DFA的最小化算法</p>
-<hr>
-<p><strong>关键是：NFA和DFA的数据结构的设计</strong></p>
-<hr>
-<p>小组合作实现单词流的输出</p>
-<p>我的理解也就是符号表的优化处理</p>
-<hr>
+<h1 id="针对-2022-compile-的分析"><a href="#针对-2022-compile-的分析" class="headerlink" title="针对**2022_compile**的分析"></a>针对**<a target="_blank" rel="noopener" href="https://github.com/shm0214/2022_compile">2022_compile</a>**的分析</h1><h3 id="（1）类型转换"><a href="#（1）类型转换" class="headerlink" title="（1）类型转换"></a>（1）类型转换</h3><p>该部分的实现在ImplicitCastExpr类中实现</p>
+<p>实现包括int2bool, int2float, float2int</p>
+<p>还包括布尔类型的转换（隐式类型转换）</p>
+<h3 id="（2）Mem2Reg"><a href="#（2）Mem2Reg" class="headerlink" title="（2）Mem2Reg"></a>（2）Mem2Reg</h3><p>这一部分的 实现都在具体的文件中可以找到</p>
+<p><strong>Phi函数的作用</strong>：在 SSA 形式中，Phi 函数用于合并来自不同控制流路径的变量值。这在处理分支（如 if-else 语句）时特别有用，因为不同的路径可能会给同一变量赋予不同的值。</p>
+<p>主要函数：</p>
+<ul>
+<li><strong>检查分支</strong></li>
+<li><strong>计算控制流图的DFS树</strong></li>
+</ul>
+<p>在计算DFS树的时候使用的是TreeNode这个结构体，里面实现了很多用来计算的函数，同时需要在function中加入根节点的记录，之后使用search函数进行构建树的时候需要使用。</p>
+<ul>
+<li><strong>计算严格支配关系+计算立即支配关系</strong></li>
+</ul>
+<p>计算的时候使用TreeNode，function中有donroot</p>
+<ul>
+<li><strong>计算支配边界</strong></li>
+<li><strong>在适当位置Phi指令，之后重命名并且进行清理</strong></li>
+</ul>
+<h3 id="（3）SSA相关"><a href="#（3）SSA相关" class="headerlink" title="（3）SSA相关"></a>（3）SSA相关</h3><p>最关键的类就是SSAGraphNode！通过这个类可以构建出来一个SSA图</p>
+<p>这里有一个非常好的关于论述文章：<a target="_blank" rel="noopener" href="https://ggaaooppeenngg.github.io/zh-CN/2017/01/22/SSA%E6%98%AF%E4%BB%80%E4%B9%88/">https://ggaaooppeenngg.github.io/zh-CN/2017/01/22/SSA%E6%98%AF%E4%BB%80%E4%B9%88/</a></p>
+<p>SSA基础之上进行优化：死代码删除，常量拓展</p>
+<h3 id="（4）窥孔优化"><a href="#（4）窥孔优化" class="headerlink" title="（4）窥孔优化"></a>（4）窥孔优化</h3><p>核心的原理就是进行多次扫描然后在一个范围内，如果可以进行优化，就进行优化</p>
+<p>核心的实现在三个pass中，分别进行不同类型的检查和优化</p>
+<p>PeepholeForIR::pass</p>
 
         </div>
 
@@ -249,7 +262,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://2112529.github.io/2024/01/19/test/">https://2112529.github.io/2024/01/19/test/</a></span>
+                        <span><a href="https://2112529.github.io/2024/01/28/a-codereview-for-compiler/">https://2112529.github.io/2024/01/28/a-codereview-for-compiler/</a></span>
                     </p>
                 
                 
@@ -272,10 +285,6 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
-                    
-                        <a href="/tags/%E7%BC%96%E8%AF%91-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/"># 编译  词法分析</a>
-                    
-                        
                 </span>
             </div>
             <div>
@@ -286,10 +295,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2024/01/26/GNNote/">GNNote</a>
             
-            
-            <a class="next" rel="next" href="/2024/01/19/hello-world/">Hello World</a>
+            <a class="next" rel="next" href="/2024/01/27/an-article-about-LLM-for-review/">an-article-about-LLM-for-review</a>
             
         </section>
 
