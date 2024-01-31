@@ -13,7 +13,7 @@
 
 
 
-<title>a-codereview-for-compiler | nickleeson.com</title>
+<title>leetcode-300 | nickleeson.com</title>
 
 
 
@@ -196,7 +196,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">a-codereview-for-compiler</h1>
+            <h1 class="post-title">leetcode-300</h1>
             
                 <div class="post-meta">
                     
@@ -205,14 +205,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">January 28, 2024&nbsp;&nbsp;14:48:24</a>
+                        Date: <a href="#">January 31, 2024&nbsp;&nbsp;10:13:45</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/category/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/">编译原理</a>
+                                <a href="/category/leetcode/">leetcode</a>
                             
                         </span>
                     
@@ -223,31 +223,17 @@
         <div class="post-content">
             <hr>
 <hr>
-<h1 id="针对2022-compile的分析"><a href="#针对2022-compile的分析" class="headerlink" title="针对2022_compile的分析"></a>针对<a target="_blank" rel="noopener" href="https://github.com/shm0214/2022_compile">2022_compile</a>的分析</h1><h3 id="（1）类型转换"><a href="#（1）类型转换" class="headerlink" title="（1）类型转换"></a>（1）类型转换</h3><p>该部分的实现在ImplicitCastExpr类中实现</p>
-<p>实现包括int2bool, int2float, float2int</p>
-<p>还包括布尔类型的转换（隐式类型转换）</p>
-<h3 id="（2）Mem2Reg"><a href="#（2）Mem2Reg" class="headerlink" title="（2）Mem2Reg"></a>（2）Mem2Reg</h3><p>这一部分的 实现都在具体的文件中可以找到</p>
-<p><strong>Phi函数的作用</strong>：在 SSA 形式中，Phi 函数用于合并来自不同控制流路径的变量值。这在处理分支（如 if-else 语句）时特别有用，因为不同的路径可能会给同一变量赋予不同的值。</p>
-<p>主要函数：</p>
-<ul>
-<li><strong>检查分支</strong></li>
-<li><strong>计算控制流图的DFS树</strong></li>
-</ul>
-<p>在计算DFS树的时候使用的是TreeNode这个结构体，里面实现了很多用来计算的函数，同时需要在function中加入根节点的记录，之后使用search函数进行构建树的时候需要使用。</p>
-<ul>
-<li><strong>计算严格支配关系+计算立即支配关系</strong></li>
-</ul>
-<p>计算的时候使用TreeNode，function中有donroot</p>
-<ul>
-<li><strong>计算支配边界</strong></li>
-<li><strong>在适当位置Phi指令，之后重命名并且进行清理</strong></li>
-</ul>
-<h3 id="（3）SSA相关"><a href="#（3）SSA相关" class="headerlink" title="（3）SSA相关"></a>（3）SSA相关</h3><p>最关键的类就是SSAGraphNode！通过这个类可以构建出来一个SSA图</p>
-<p>这里有一个非常好的关于论述文章：<a target="_blank" rel="noopener" href="https://ggaaooppeenngg.github.io/zh-CN/2017/01/22/SSA%E6%98%AF%E4%BB%80%E4%B9%88/">https://ggaaooppeenngg.github.io/zh-CN/2017/01/22/SSA%E6%98%AF%E4%BB%80%E4%B9%88/</a></p>
-<p>SSA基础之上进行优化：死代码删除，常量拓展</p>
-<h3 id="（4）窥孔优化"><a href="#（4）窥孔优化" class="headerlink" title="（4）窥孔优化"></a>（4）窥孔优化</h3><p>核心的原理就是进行多次扫描然后在一个范围内，如果可以进行优化，就进行优化</p>
-<p>核心的实现在三个pass中，分别进行不同类型的检查和优化</p>
-<p>PeepholeForIR::pass</p>
+<h3 id="求最长递增子序列"><a href="#求最长递增子序列" class="headerlink" title="求最长递增子序列"></a>求最长递增子序列</h3><p>求一个数组中最长递增子序列的长度</p>
+<p>首先确定这是一个<strong>动态规划问题</strong>，那么问题就是如何写出动态规划方程—-方程的关键在于数值的比较</p>
+<p>假设我们<strong>从后往前对一串数值进行遍历</strong></p>
+<p>考虑前i个数值，假设$$dp[i]$$表示的是前i个数值中最长子序列长度</p>
+<p>那么动态规划方程可以表示为：<br>$$<br>dp[i]&#x3D;max(dp[j])+1,其中0&lt;&#x3D;j&lt;i且nums[j]&lt;nums[i]<br>$$<br>根据上述的动态规划方程求解得到：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">lengthOfLIS</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> length=nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">dp</span><span class="params">(length,<span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="comment">//dp[0]=1;</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;length;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            dp[i]=<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;i;j++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(nums[j]&lt;nums[i])dp[i]=<span class="built_in">max</span>(dp[i],dp[j]+<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//dp[i]=num;</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> result=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;length;i++)</span><br><span class="line">            result=<span class="built_in">max</span>(result,dp[i]);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="进阶—–将算法复杂度降低到-nlog-n"><a href="#进阶—–将算法复杂度降低到-nlog-n" class="headerlink" title="进阶—–将算法复杂度降低到$$nlog(n)$$"></a>进阶—–将算法复杂度降低到$$nlog(n)$$</h3><p>使用<strong>贪心算法+二分查找</strong></p>
+<p>是子序列尽可能的长—–需要使得上升的速度尽可能的慢</p>
+<p>这就是一种从前往后的思路</p>
 
         </div>
 
@@ -262,7 +248,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://2112529.github.io/2024/01/28/a-codereview-for-compiler/">https://2112529.github.io/2024/01/28/a-codereview-for-compiler/</a></span>
+                        <span><a href="https://2112529.github.io/2024/01/31/leetcode-300/">https://2112529.github.io/2024/01/31/leetcode-300/</a></span>
                     </p>
                 
                 
@@ -285,6 +271,10 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
+                    
+                        <a href="/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"># 动态规划</a>
+                    
+                        
                 </span>
             </div>
             <div>
@@ -295,10 +285,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2024/01/31/leetcode-300/">leetcode-300</a>
             
-            
-            <a class="next" rel="next" href="/2024/01/27/an-article-about-LLM-for-review/">an-article-about-LLM-for-review</a>
+            <a class="next" rel="next" href="/2024/01/28/a-codereview-for-compiler/">a-codereview-for-compiler</a>
             
         </section>
 
