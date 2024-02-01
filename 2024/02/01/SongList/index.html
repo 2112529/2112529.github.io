@@ -13,7 +13,7 @@
 
 
 
-<title>leetcode-300 | nickleeson.com</title>
+<title>一部歌单 | nickleeson.com</title>
 
 
 
@@ -196,7 +196,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">leetcode-300</h1>
+            <h1 class="post-title">一部歌单</h1>
             
                 <div class="post-meta">
                     
@@ -205,14 +205,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">January 31, 2024&nbsp;&nbsp;10:13:45</a>
+                        Date: <a href="#">February 1, 2024&nbsp;&nbsp;9:50:01</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/category/leetcode/">leetcode</a>
+                                <a href="/category/%E7%94%9F%E6%B4%BB/">生活</a>
                             
                         </span>
                     
@@ -221,19 +221,14 @@
         </header>
 
         <div class="post-content">
-            <hr>
-<hr>
-<h3 id="求最长递增子序列"><a href="#求最长递增子序列" class="headerlink" title="求最长递增子序列"></a>求最长递增子序列</h3><p>求一个数组中最长递增子序列的长度</p>
-<p>首先确定这是一个<strong>动态规划问题</strong>，那么问题就是如何写出动态规划方程—-方程的关键在于数值的比较</p>
-<p>假设我们<strong>从后往前对一串数值进行遍历</strong></p>
-<p>考虑前i个数值，假设$$dp[i]$$表示的是前i个数值中最长子序列长度</p>
-<p>那么动态规划方程可以表示为：<br>$$<br>dp[i]&#x3D;max(dp[j])+1,其中0&lt;&#x3D;j&lt;i且nums[j]&lt;nums[i]<br>$$<br>根据上述的动态规划方程求解得到：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">lengthOfLIS</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> length=nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">dp</span><span class="params">(length,<span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="comment">//dp[0]=1;</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;length;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            dp[i]=<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;i;j++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(nums[j]&lt;nums[i])dp[i]=<span class="built_in">max</span>(dp[i],dp[j]+<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//dp[i]=num;</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> result=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;length;i++)</span><br><span class="line">            result=<span class="built_in">max</span>(result,dp[i]);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="进阶—–将算法复杂度降低到-nlog-n"><a href="#进阶—–将算法复杂度降低到-nlog-n" class="headerlink" title="进阶—–将算法复杂度降低到$$nlog(n)$$"></a>进阶—–将算法复杂度降低到$$nlog(n)$$</h3><p>使用<strong>贪心算法+二分查找</strong></p>
-<p>是子序列尽可能的长—–需要使得上升的速度尽可能的慢</p>
-<p>这就是一种从前往后的思路</p>
+            <h1 id="歌单"><a href="#歌单" class="headerlink" title="歌单"></a>歌单</h1><p>这份歌单主要是为了记录我在闲暇的时间听到的触动到我的歌曲。</p>
+<p>歌的主要特征就是感情</p>
+<ul>
+<li>Hello—-阿呆</li>
+<li>Someone Like You—-阿呆</li>
+<li>加州旅馆—-B站某中年饭局乐队</li>
+<li>假如爱有天意—-李健</li>
+</ul>
 
         </div>
 
@@ -248,7 +243,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://2112529.github.io/2024/01/31/leetcode-300/">https://2112529.github.io/2024/01/31/leetcode-300/</a></span>
+                        <span><a href="https://2112529.github.io/2024/02/01/SongList/">https://2112529.github.io/2024/02/01/SongList/</a></span>
                     </p>
                 
                 
@@ -271,10 +266,6 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
-                    
-                        <a href="/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"># 动态规划</a>
-                    
-                        
                 </span>
             </div>
             <div>
@@ -285,10 +276,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2024/02/01/SongList/">一部歌单</a>
             
-            
-            <a class="next" rel="next" href="/2024/01/28/a-codereview-for-compiler/">a-codereview-for-compiler</a>
+            <a class="next" rel="next" href="/2024/01/31/leetcode-300/">leetcode-300</a>
             
         </section>
 
