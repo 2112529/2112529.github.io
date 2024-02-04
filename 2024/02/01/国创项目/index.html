@@ -224,20 +224,27 @@
             <h3 id="（1）论文动机"><a href="#（1）论文动机" class="headerlink" title="（1）论文动机"></a>（1）论文动机</h3><p>本文提出了一种视觉transformer的backbone。</p>
 <p>主要针对的问题：</p>
 <ul>
-<li>视觉实体的变化往往很大</li>
-<li>图像高分辨率</li>
+<li>受限于图像的矩阵性质，视觉实体的变化往往很大</li>
+<li>不适合处理dense输出型的任务，应对高分辨率照片的时候会计算过于复杂。</li>
 </ul>
 <p>为了解决上面的问题，本文提出了一种分层的Transformer，特征计算和移动窗口一起进行。</p>
-<p>原理概述：</p>
 <p>具备灵活性且对所有的多层感知器模型都可以带来增益。</p>
 <h3 id="（2）论文介绍"><a href="#（2）论文介绍" class="headerlink" title="（2）论文介绍"></a>（2）论文介绍</h3><h3 id="（3）核心方法论"><a href="#（3）核心方法论" class="headerlink" title="（3）核心方法论"></a>（3）核心方法论</h3><p>首先是流程框架的介绍：<br><img src="/2024/02/01/%E5%9B%BD%E5%88%9B%E9%A1%B9%E7%9B%AE/Architecture.png" alt="Archittecture.png"></p>
 <!-- <img src="/2024/02/01/%E5%9B%BD%E5%88%9B%E9%A1%B9%E7%9B%AE/Architecture.png" class="" title="框架"> -->
 
-<p>拿到输入之后，先将其分为一个又一个的patch，然后使用线性嵌入层进行嵌入，之后通过Swin Transformer block模块进行处理，之后使用patch进行merge操作，也就是将一个2*2区域的patches合并为一个，然后进行Swin Transformer block模块进行处理，之后重复两次。</p>
-<p>其次就是Swin Transformer block：<br><img src="/2024/02/01/%E5%9B%BD%E5%88%9B%E9%A1%B9%E7%9B%AE/Block.png" alt="Swin block"></p>
+<p>拿到输入之后，先将其分为一个又一个的patch，然后使用线性嵌入层进行嵌入，（在具体的代码实现中，PatchPartion+Linear Embedding&#x3D;Patch Merge，两者的实现是一样的）之后通过Swin Transformer block模块（这里每一个module会经过多个block进行处理，也就是不同的深度）进行处理，之后进行patch merge操作，也就是将一个2*2区域的patches合并为一个，然后进行Swin Transformer block模块进行处理，之后重复两次。共四个阶段。</p>
+<h4 id="1-StageModule"><a href="#1-StageModule" class="headerlink" title="1.StageModule"></a>1.StageModule</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">StageModule</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_channels, hidden_dimension, layers, downscaling_factor, num_heads, head_dim, window_size,</span></span><br><span class="line"><span class="params">                 relative_pos_embedding</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        <span class="keyword">assert</span> layers % <span class="number">2</span> == <span class="number">0</span>, <span class="string">&#x27;Stage layers need to be divisible by 2 for regular and shifted block.&#x27;</span></span><br><span class="line">        self.patch_partition = PatchMerging(in_channels=in_channels, out_channels=hidden_dimension,</span><br><span class="line">                                            downscaling_factor=downscaling_factor)</span><br><span class="line">        self.layers = nn.ModuleList([])</span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(layers // <span class="number">2</span>):</span><br><span class="line">            self.layers.append(nn.ModuleList([</span><br><span class="line">                SwinBlock(dim=hidden_dimension, heads=num_heads, head_dim=head_dim, mlp_dim=hidden_dimension * <span class="number">4</span>,shifted=<span class="literal">False</span>, window_size=window_size, relative_pos_embedding=relative_pos_embedding),</span><br><span class="line">                SwinBlock(dim=hidden_dimension, heads=num_heads, head_dim=head_dim, mlp_dim=hidden_dimension * <span class="number">4</span>,shifted=<span class="literal">True</span>, window_size=window_size, relative_pos_embedding=relative_pos_embedding),</span><br><span class="line">            ]))</span><br><span class="line">            </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        x = self.patch_partition(x)</span><br><span class="line">        <span class="keyword">for</span> regular_block, shifted_block <span class="keyword">in</span> self.layers:</span><br><span class="line">            x = regular_block(x)</span><br><span class="line">            x = shifted_block(x)</span><br><span class="line">        <span class="keyword">return</span> x.permute(<span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这一部分可以看见，每一个阶段的都是由PatchMerging+SwinBlock，其中SwinBlock分为WMSA 和 SWMSA，这里需要检查layers是不是2的倍数。</p>
+<h4 id="2-Patch-Merging模块"><a href="#2-Patch-Merging模块" class="headerlink" title="2.Patch Merging模块"></a>2.Patch Merging模块</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PatchMerging</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_channels, out_channels, downscaling_factor</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.downscaling_factor = downscaling_factor</span><br><span class="line">        self.patch_merge = nn.Unfold(kernel_size=downscaling_factor, stride=downscaling_factor, padding=<span class="number">0</span>)</span><br><span class="line">        self.linear = nn.Linear(in_channels * downscaling_factor ** <span class="number">2</span>, out_channels)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        b, c, h, w = x.shape</span><br><span class="line">        new_h, new_w = h // self.downscaling_factor, w // self.downscaling_factor</span><br><span class="line">        x = self.patch_merge(x) <span class="comment"># (1, 48, 3136)</span></span><br><span class="line">        x = x.view(b, -<span class="number">1</span>, new_h, new_w).permute(<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>) <span class="comment"># (1, 56, 56, 48)</span></span><br><span class="line">        x = self.linear(x) <span class="comment"># (1, 56, 56, 96)</span></span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+
+<p>这一部分相当于是CNN的pooling层，用来进行下采样。</p>
+<h4 id="3-Swin-Transformer-Block"><a href="#3-Swin-Transformer-Block" class="headerlink" title="3.Swin Transformer Block"></a>3.Swin Transformer Block</h4><p><img src="/2024/02/01/%E5%9B%BD%E5%88%9B%E9%A1%B9%E7%9B%AE/Block.png" alt="Swin block"></p>
 <!--  -->
 
-<p>该部分将Transformer的MSA模块替换成了基于shifted windows的注意力模块，紧接着是GELU 和一个两层的MLP</p>
+<p>该部分首先是使用LN进行归一化，然后再经过W-MSA进行特征的学习，接着的是一个残差操作。接着是一个LN，一个MLP以及一个残差，得到这一层的输出特征 。SW-MSA层的结构和W-MSA层类似。</p>
+<p>将Transformer的MSA模块替换成了基于shifted windows的注意力模块，紧接着是GELU 和一个两层的MLP</p>
+<p>其中，W-MSA原理+SW-MSA原理暂时还没有学习清楚。</p>
 <p><img src="/2024/02/01/%E5%9B%BD%E5%88%9B%E9%A1%B9%E7%9B%AE/shifted.png" alt="Partion"></p>
 <!--  -->
 
@@ -246,7 +253,15 @@
 <!--  -->
 
 <p>在上述处理的过程中，还有可能会出现划分的window过小的情况，这个时候我们就采用类似于上面的处理方式进行处理。</p>
-<h3 id="（4）实验部分"><a href="#（4）实验部分" class="headerlink" title="（4）实验部分"></a>（4）实验部分</h3><h3 id="（5）总结"><a href="#（5）总结" class="headerlink" title="（5）总结"></a>（5）总结</h3>
+<h3 id="（4）实验部分"><a href="#（4）实验部分" class="headerlink" title="（4）实验部分"></a>（4）实验部分</h3><p>实验部分主要是说明了使用该backbone在多个任务上都达到了SOTA的效果。</p>
+<h3 id="（5）总结"><a href="#（5）总结" class="headerlink" title="（5）总结"></a>（5）总结</h3><p>这篇文章是非常优秀的一篇文章，设计非常巧妙，具有创新又紧扣CNN的优点，充分考虑的CNN的位移不变性，尺寸不变性，感受野与层次的关系，分阶段降低分辨率增加通道数等特点。</p>
+<p>但是还是存在一些局限性：</p>
+<ul>
+<li>没有提供一个像反卷积那样的上采样的算法，对于这类需求无法直接替换backbone，maybe可以采用双线性插值来解决。</li>
+<li>不具备权值共享的特性，速度还是和CNN存在一定的差距。</li>
+<li>虽然在检测、分割、分类等领域已经取得了很好的效果，但是很多CNN SOTA的领域还未充分验证。</li>
+</ul>
+
         </div>
 
         
