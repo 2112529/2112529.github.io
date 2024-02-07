@@ -13,7 +13,7 @@
 
 
 
-<title>leetcode-131 | nickleeson.com</title>
+<title>国创论文阅读2 | nickleeson.com</title>
 
 
 
@@ -196,7 +196,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">leetcode-131</h1>
+            <h1 class="post-title">国创论文阅读2</h1>
             
                 <div class="post-meta">
                     
@@ -205,14 +205,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">February 1, 2024&nbsp;&nbsp;18:58:21</a>
+                        Date: <a href="#">February 6, 2024&nbsp;&nbsp;17:56:52</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/category/leetcode/">leetcode</a>
+                                <a href="/category/%E5%9B%BD%E5%88%9B/">国创</a>
                             
                         </span>
                     
@@ -221,18 +221,7 @@
         </header>
 
         <div class="post-content">
-            <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="分割回文串"><a href="#分割回文串" class="headerlink" title="分割回文串"></a>分割回文串</h1><p><strong>问题</strong>：给定一个字符串，返回该字符串切分为回文串的子串集合。注意是返回所有的切分方案。</p>
-<p><strong>我最开始的解题思路</strong>：我首先想到的是使用<strong>双指针</strong>的策略，可以通过对比是否是一样的进行递归。</p>
-<p>其次就是需要考虑<strong>递归</strong>的存在，最简单的回文串就是一个单独的字符，在这个的基础上，如果该字符的两边的 字符也是相同的，那么就是回文串。其次就是如果是偶数个字符的话，这种情况也需要考虑！</p>
-<p>考虑好了如何判断是不是回文串之后就是如何遍历所有的可能的情况</p>
-<p>我们这里可以使用搜索+回溯的方式枚举所有可能的分割方式然后使用上面的方式进行判断。</p>
-<hr>
-<p><strong>参考思路一</strong>:</p>
-<p>首先使用动态规划对字符串进行预处理，就是提前判断字符串的 每个子串是不是回文串，使用$$f[i][j]$$来表示。</p>
-<p>关键的状态转移方程如下：<br>$$<br>f(i,j)&#x3D;\begin{cases}\text{True},&amp;\quad i\geq j\f(i+1,j-1)\wedge(s[i]&#x3D;s[j]),&amp;\quad\text{otherwise}&amp;\end{cases}<br>$$<br>预处理之后，我们只需要O（1）的复杂度就可以判断子串是不是回文串了。</p>
-<p>代码：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    vector&lt;vector&lt;string&gt;&gt; results;</span><br><span class="line">    vector&lt;string&gt; result;</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; f;</span><br><span class="line">    <span class="type">int</span> size;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">const</span> string&amp;s,<span class="type">int</span> i)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(i==size)</span><br><span class="line">        &#123;</span><br><span class="line">            results.<span class="built_in">push_back</span>(result);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=i;j&lt;size;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(f[i][j])</span><br><span class="line">            &#123;</span><br><span class="line">                result.<span class="built_in">push_back</span>(s.<span class="built_in">substr</span>(i, j-i+<span class="number">1</span>));<span class="comment">//从i开始j-i+1长度的字符串</span></span><br><span class="line">                <span class="built_in">dfs</span>(s,j+<span class="number">1</span>);<span class="comment">//继续向下搜索</span></span><br><span class="line">                result.<span class="built_in">pop_back</span>();<span class="comment">//回溯</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    vector&lt;vector&lt;string&gt;&gt; <span class="built_in">partition</span>(string s) &#123;      </span><br><span class="line">        size=s.<span class="built_in">size</span>();</span><br><span class="line">        f.<span class="built_in">assign</span>(size,<span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(size,<span class="literal">true</span>));</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=size<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=i+<span class="number">1</span>;j&lt;size;j++)</span><br><span class="line">            &#123;</span><br><span class="line">                f[i][j]=(s[i]==s[j])&amp;&amp;f[i+<span class="number">1</span>][j<span class="number">-1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">dfs</span>(s,<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> results;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
+            <h1 id="Iterative-Prompt-Learning-for-Unsupervised-Backlit-Image-Enhancement阅读笔记"><a href="#Iterative-Prompt-Learning-for-Unsupervised-Backlit-Image-Enhancement阅读笔记" class="headerlink" title="Iterative Prompt Learning for Unsupervised Backlit Image Enhancement阅读笔记"></a>Iterative Prompt Learning for Unsupervised Backlit Image Enhancement阅读笔记</h1><p>具体参照知乎：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/654102381">https://zhuanlan.zhihu.com/p/654102381</a></p>
 
         </div>
 
@@ -247,7 +236,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://2112529.github.io/2024/02/01/leetcode-131/">https://2112529.github.io/2024/02/01/leetcode-131/</a></span>
+                        <span><a href="https://2112529.github.io/2024/02/06/%E5%9B%BD%E5%88%9B%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB2/">https://2112529.github.io/2024/02/06/%E5%9B%BD%E5%88%9B%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB2/</a></span>
                     </p>
                 
                 
@@ -270,10 +259,6 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
-                    
-                        <a href="/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"># 动态规划</a>
-                    
-                        
                 </span>
             </div>
             <div>
@@ -284,10 +269,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2024/02/01/%E5%9B%BD%E5%88%9B%E9%A1%B9%E7%9B%AE/">Swin Transformer 阅读笔记</a>
             
-            
-            <a class="next" rel="next" href="/2024/02/01/how-to-read-a-city/">如何阅读一座城市？</a>
+            <a class="next" rel="next" href="/2024/02/06/%E9%87%8F%E5%AD%90%E8%AE%A1%E7%AE%97/">量子计算</a>
             
         </section>
 
