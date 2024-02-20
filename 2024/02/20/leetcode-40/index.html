@@ -13,7 +13,7 @@
 
 
 
-<title>leetcode-199 | nickleeson.com</title>
+<title>leetcode-40 | nickleeson.com</title>
 
 
 
@@ -196,7 +196,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">leetcode-199</h1>
+            <h1 class="post-title">leetcode-40</h1>
             
                 <div class="post-meta">
                     
@@ -205,7 +205,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">February 19, 2024&nbsp;&nbsp;10:47:10</a>
+                        Date: <a href="#">February 20, 2024&nbsp;&nbsp;11:08:52</a>
                         </span>
                     
                     
@@ -221,11 +221,14 @@
         </header>
 
         <div class="post-content">
-            <h1 id="二叉树右视图"><a href="#二叉树右视图" class="headerlink" title="二叉树右视图"></a>二叉树右视图</h1><p>给定一个二叉树的 <strong>根节点</strong> <code>root</code>，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。</p>
-<p>首先比较直观的一种解决方式是进行<strong>宽度优先搜索</strong>，然后同一层的节点只需要保存最后一个加入进来的节点（也就是最右边的节点）</p>
-<p>使用的主要数据结构是<strong>队列</strong></p>
-<p>需要解决的关键问题是如何解决层次的问题，需要进行同一层次的判断。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">rightSideView</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        unordered_map&lt;<span class="type">int</span>,<span class="type">int</span>&gt; MostRightValue;</span><br><span class="line">        <span class="type">int</span> max_depth=<span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">        queue&lt;TreeNode *&gt; q;</span><br><span class="line">        queue&lt;<span class="type">int</span>&gt; depthq;</span><br><span class="line">        q.<span class="built_in">push</span>(root);</span><br><span class="line">        depthq.<span class="built_in">push</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(!q.<span class="built_in">empty</span>())</span><br><span class="line">        &#123;</span><br><span class="line">            TreeNode * node =q.<span class="built_in">front</span>();</span><br><span class="line">            q.<span class="built_in">pop</span>();</span><br><span class="line">            <span class="type">int</span> depth=depthq.<span class="built_in">front</span>();</span><br><span class="line">            depthq.<span class="built_in">pop</span>();</span><br><span class="line">            <span class="keyword">if</span>(node!=<span class="literal">NULL</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                max_depth=<span class="built_in">max</span>(max_depth,depth);</span><br><span class="line">                MostRightValue[depth]=node-&gt;val;               </span><br><span class="line">                q.<span class="built_in">push</span>(node-&gt;left);</span><br><span class="line">                depthq.<span class="built_in">push</span>(depth+<span class="number">1</span>);</span><br><span class="line">                q.<span class="built_in">push</span>(node-&gt;right);</span><br><span class="line">                depthq.<span class="built_in">push</span>(depth+<span class="number">1</span>);  </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt;ans;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> depth=<span class="number">0</span>;depth&lt;=max_depth;++depth)</span><br><span class="line">        &#123;</span><br><span class="line">            ans.<span class="built_in">push_back</span>(MostRightValue[depth]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+            <h1 id="组合总和II"><a href="#组合总和II" class="headerlink" title="组合总和II"></a>组合总和II</h1><p>给定一个候选人序列号集合（存在重复但是每个数字在每个组合中仅仅能出现一次），找出其中加和等于目标数的所有组合（不限制候选人的数量）。</p>
+<p><strong>思考：</strong>拿到这个题目之后，首先我们可以认识到，这个问题最难以解决的问题就是因为不限制候选人的数量。</p>
+<p>其次我们可以观察到，每个数字在每个组合中仅能出现一次，所以可以使用一个二进制数组标记是否出现过。</p>
+<p><strong>思路：</strong>可以优先进行<strong>排序</strong>之后，然后使用<strong>多指针</strong>的策略，之后使用<strong>深度优先搜索</strong>同时进行<strong>回溯</strong>的方式来<strong>遍历</strong>解的空间。</p>
+<p><strong>递归函数的设计：</strong>我们考虑$$dfs(pos,rest)$$,这个函数来进行 递归，其中pos表示的是当前递归的位置，rest是指剩下的需要的数值。每个pos的数值我们考虑选择or不选择，进行进行递归。</p>
+<p><strong>去重的操作：</strong>我们需要进行一定的去重操作，我们这里采用hash映射的方式统计每个数字出现的次数，每次处理的时候，我们遍历可能出现的所有的次数，然后进行多次递归，这样就可以避免最后答案中出现重复的情况。</p>
+<p><strong>进一步的优化：</strong>我们还可以通过排序进行剪枝，我们将 freq根据数从小到大排序，这样我们在递归时会先选择小的数，再选择大的数。这样做的好处是，当我们递归到 dfs(pos,rest) 时，如果 freq[pos][0]已经大于 rest，那么后面还没有递归到的数也都大于 rest，这就说明不可能再选择若干个和为 rest的数放入列表了。此时，我们就可以直接回溯。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
 
 
         </div>
@@ -241,7 +244,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://2112529.github.io/2024/02/19/leetcode-199/">https://2112529.github.io/2024/02/19/leetcode-199/</a></span>
+                        <span><a href="https://2112529.github.io/2024/02/20/leetcode-40/">https://2112529.github.io/2024/02/20/leetcode-40/</a></span>
                     </p>
                 
                 
@@ -274,10 +277,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2024/02/20/leetcode-40/">leetcode-40</a>
             
-            
-            <a class="next" rel="next" href="/2024/02/08/%E4%B8%80%E4%BA%9B%E4%BB%96%E4%BA%BA%E7%9A%84%E8%AF%9D/">一些他人的话</a>
+            <a class="next" rel="next" href="/2024/02/19/leetcode-199/">leetcode-199</a>
             
         </section>
 
