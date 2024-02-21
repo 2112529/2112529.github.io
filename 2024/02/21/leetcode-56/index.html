@@ -13,7 +13,7 @@
 
 
 
-<title>leetcode-40 | nickleeson.com</title>
+<title>leetcode-56 | nickleeson.com</title>
 
 
 
@@ -196,7 +196,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">leetcode-40</h1>
+            <h1 class="post-title">leetcode-56</h1>
             
                 <div class="post-meta">
                     
@@ -205,7 +205,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">February 20, 2024&nbsp;&nbsp;11:08:52</a>
+                        Date: <a href="#">February 21, 2024&nbsp;&nbsp;11:23:25</a>
                         </span>
                     
                     
@@ -221,14 +221,10 @@
         </header>
 
         <div class="post-content">
-            <h1 id="组合总和II"><a href="#组合总和II" class="headerlink" title="组合总和II"></a>组合总和II</h1><p>给定一个候选人序列号集合（存在重复但是每个数字在每个组合中仅仅能出现一次），找出其中加和等于目标数的所有组合（不限制候选人的数量）。</p>
-<p><strong>思考：</strong>拿到这个题目之后，首先我们可以认识到，这个问题最难以解决的问题就是因为不限制候选人的数量。</p>
-<p>其次我们可以观察到，每个数字在每个组合中仅能出现一次，所以可以使用一个二进制数组标记是否出现过。</p>
-<p><strong>思路：</strong>可以优先进行<strong>排序</strong>之后，然后使用<strong>多指针</strong>的策略，之后使用<strong>深度优先搜索</strong>同时进行<strong>回溯</strong>的方式来<strong>遍历</strong>解的空间。</p>
-<p><strong>递归函数的设计：</strong>我们考虑$$dfs(pos,rest)$$,这个函数来进行 递归，其中pos表示的是当前递归的位置，rest是指剩下的需要的数值。每个pos的数值我们考虑选择or不选择，进行进行递归。</p>
-<p><strong>去重的操作：</strong>我们需要进行一定的去重操作，我们这里采用hash映射的方式统计每个数字出现的次数，每次处理的时候，我们遍历可能出现的所有的次数，然后进行多次递归，这样就可以避免最后答案中出现重复的情况。</p>
-<p><strong>进一步的优化：</strong>我们还可以通过排序进行剪枝，我们将 freq根据数从小到大排序，这样我们在递归时会先选择小的数，再选择大的数。这样做的好处是，当我们递归到 dfs(pos,rest) 时，如果 freq[pos][0]已经大于 rest，那么后面还没有递归到的数也都大于 rest，这就说明不可能再选择若干个和为 rest的数放入列表了。此时，我们就可以直接回溯。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+            <h1 id="合并区间"><a href="#合并区间" class="headerlink" title="合并区间"></a>合并区间</h1><p>以数组 <code>intervals</code> 表示若干个区间的集合，其中单个区间为 <code>intervals[i] = [starti, endi]</code> 。请你合并所有重叠的区间，并返回 <em>一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间</em> 。</p>
+<p><strong>思考：</strong>其实在算法导论课程中有过类似的问题，但是那个时候是考虑区间之间的时间分配问题，这个问题其实某中程度上有相似的地方。</p>
+<p>我的第一个想法是先对这些区间进行排序，排序之后设置一个指针标记数值然后开始遍历，逐渐开始比较并开始合并！</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">merge</span>(vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; intervals) &#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;ans;</span><br><span class="line">        <span class="type">int</span> size=intervals.<span class="built_in">size</span>();</span><br><span class="line">        <span class="built_in">sort</span>(intervals.<span class="built_in">begin</span>(),intervals.<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;size;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(!ans.<span class="built_in">size</span>()||ans.<span class="built_in">back</span>()[<span class="number">1</span>]&lt;intervals[i][<span class="number">0</span>])</span><br><span class="line">                ans.<span class="built_in">push_back</span>(intervals[i]);</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                ans.<span class="built_in">back</span>()[<span class="number">1</span>]=<span class="built_in">max</span>(ans.<span class="built_in">back</span>()[<span class="number">1</span>],intervals[i][<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 
         </div>
@@ -244,7 +240,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://2112529.github.io/2024/02/20/leetcode-40/">https://2112529.github.io/2024/02/20/leetcode-40/</a></span>
+                        <span><a href="https://2112529.github.io/2024/02/21/leetcode-56/">https://2112529.github.io/2024/02/21/leetcode-56/</a></span>
                     </p>
                 
                 
@@ -277,10 +273,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2024/02/21/leetcode-56/">leetcode-56</a>
             
-            
-            <a class="next" rel="next" href="/2024/02/19/leetcode-199/">leetcode-199</a>
+            <a class="next" rel="next" href="/2024/02/20/leetcode-40/">leetcode-40</a>
             
         </section>
 
