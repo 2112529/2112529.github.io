@@ -13,7 +13,7 @@
 
 
 
-<title>leetcode-416 | nickleeson.com</title>
+<title>leetcode-23 | nickleeson.com</title>
 
 
 
@@ -196,7 +196,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">leetcode-416</h1>
+            <h1 class="post-title">leetcode-23</h1>
             
                 <div class="post-meta">
                     
@@ -205,7 +205,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">March 1, 2024&nbsp;&nbsp;14:42:16</a>
+                        Date: <a href="#">March 2, 2024&nbsp;&nbsp;15:09:18</a>
                         </span>
                     
                     
@@ -221,15 +221,15 @@
         </header>
 
         <div class="post-content">
-            <h1 id="分割等和子集"><a href="#分割等和子集" class="headerlink" title="分割等和子集"></a>分割等和子集</h1><p><strong>题目描述：</strong>有一个只包含正整数的数组，现在想要将这个数组分成两个子数组，保证这两个子数组的和是相等的。</p>
-<p><strong>思路：</strong>，之后我们需要使用<strong>动态规划</strong>的思路来解决这个问题。</p>
-<p>我们其实可以很简单的算出来最后的和是多少，也就是我们最后需要加和出来的数值。</p>
-<p>我们容易知道，数组的和一定是一个偶数。</p>
-<p>我们将问题转化为一个01背包问题，关键就是<strong>确定初始状态</strong>以及<strong>确定状态转移方程</strong>。</p>
-<p><strong>初始状态：</strong>我们可以规定$$dp[i][j]$$表示在区间$$[0,i]$$内进行搜索，然后找到和为j，如果可以就是true，标记所有的初始状态为false</p>
-<p><strong>状态转移方程：</strong>$$dp[i][j]&#x3D;\begin{cases}dp[i-1][j]\mid dp[i-1][j-nums[i]],&amp;j\geq nums[i]\dp[i-1][j],&amp;j&lt;nums[i]\end{cases}$$</p>
-<p>具体的实现代码如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">canPartition</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> n=nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">if</span>(n&lt;<span class="number">2</span>)<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="type">int</span> sum=<span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> maxnum=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            sum+=nums[i];</span><br><span class="line">            maxnum=<span class="built_in">max</span>(maxnum,nums[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> target=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(sum%<span class="number">2</span>!=<span class="number">0</span>)<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">else</span> target=sum/<span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span>(maxnum&gt;target)<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">bool</span>&gt;&gt;<span class="built_in">dp</span>(n,<span class="built_in">vector</span>&lt;<span class="type">bool</span>&gt;(target+<span class="number">1</span>,<span class="number">0</span>));</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++)dp[i][<span class="number">0</span>]=<span class="literal">true</span>;</span><br><span class="line">        dp[<span class="number">0</span>][nums[<span class="number">0</span>]]=<span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;n;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=target;j++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(j&gt;=nums[i])dp[i][j]=dp[i<span class="number">-1</span>][j]|dp[i<span class="number">-1</span>][j-nums[i]];</span><br><span class="line">                <span class="keyword">else</span> dp[i][j]=dp[i<span class="number">-1</span>][j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[n<span class="number">-1</span>][target];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+            <h1 id="合并k个升序链表"><a href="#合并k个升序链表" class="headerlink" title="合并k个升序链表"></a>合并k个升序链表</h1><p><strong>题目描述：</strong>给定k个升序的链表，将其合并为一个升序链表</p>
+<p><strong>思路：</strong>首先我们想到的数据结构是<strong>堆</strong>，但是这个数据结构针对的是数，将链表转化过去可能还是比较复杂。</p>
+<p>之后我们又想到使用多个指针去跟踪所有的链表，然后进行比较和更新。</p>
+<p>下面的代码是我的初步思路的coding：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">mergeKLists</span><span class="params">(vector&lt;ListNode*&gt;&amp; lists)</span> </span>&#123;</span><br><span class="line">        ListNode  ans=<span class="keyword">new</span> <span class="built_in">ListNode</span>(<span class="number">0</span>);</span><br><span class="line">        ListNode* temp=&amp;ans;</span><br><span class="line">        <span class="type">int</span> size=lists.<span class="built_in">size</span>();</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">num</span><span class="params">(size,<span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;size;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            num[i]=lists[i][<span class="number">0</span>]-&gt;val;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> minPosition = <span class="built_in">min_element</span>(num.<span class="built_in">begin</span>(),num.<span class="built_in">end</span>()) - num.<span class="built_in">begin</span>();</span><br><span class="line">        temp-&gt;next=lists[minPosition][<span class="number">0</span>];</span><br><span class="line">        num[minPosition]=lists[minPosition][<span class="number">0</span>]-&gt;next-&gt;val;</span><br><span class="line">        lists[minPosition][<span class="number">0</span>]=lists[minPosition][<span class="number">0</span>]-&gt;next;</span><br><span class="line">        lists[minPosition][<span class="number">0</span>]-&gt;next=<span class="literal">NULL</span>;      </span><br><span class="line">        temp=temp-&gt;next;</span><br><span class="line">        <span class="keyword">return</span> ans-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>但是我们可以发现，其实并没有解决这个问题，关键的问题是：<strong>什么时候才可以停止的判断问题</strong></p>
+<p>这是我们优化之后的代码：最关键的地方是<strong>自定义比较特性的优先级队列</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">mergeKLists</span><span class="params">(vector&lt;ListNode*&gt;&amp; lists)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">auto</span> compare = [](ListNode* a, ListNode* b) &#123;</span><br><span class="line">            <span class="keyword">return</span> a-&gt;val &gt; b-&gt;val;</span><br><span class="line">        &#125;;</span><br><span class="line">        priority_queue&lt;ListNode*, vector&lt;ListNode*&gt;, <span class="keyword">decltype</span>(compare)&gt; <span class="built_in">pq</span>(compare);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化优先队列</span></span><br><span class="line">        <span class="keyword">for</span> (ListNode* list : lists) &#123;</span><br><span class="line">            <span class="keyword">if</span> (list) &#123;</span><br><span class="line">                pq.<span class="built_in">push</span>(list);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function">ListNode <span class="title">dummy</span><span class="params">(<span class="number">0</span>)</span></span>;</span><br><span class="line">        ListNode* tail = &amp;dummy;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (!pq.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">            ListNode* minNode = pq.<span class="built_in">top</span>();</span><br><span class="line">            pq.<span class="built_in">pop</span>();</span><br><span class="line">            tail-&gt;next = minNode;</span><br><span class="line">            tail = tail-&gt;next;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (minNode-&gt;next) &#123;</span><br><span class="line">                pq.<span class="built_in">push</span>(minNode-&gt;next);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dummy.next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 
         </div>
@@ -245,7 +245,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://2112529.github.io/2024/03/01/leetcode-416/">https://2112529.github.io/2024/03/01/leetcode-416/</a></span>
+                        <span><a href="https://2112529.github.io/2024/03/02/leetcode-23/">https://2112529.github.io/2024/03/02/leetcode-23/</a></span>
                     </p>
                 
                 
@@ -278,10 +278,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2024/03/02/leetcode-23/">leetcode-23</a>
             
-            
-            <a class="next" rel="next" href="/2024/02/29/leetcode-200/">leetcode-200</a>
+            <a class="next" rel="next" href="/2024/03/01/leetcode-416/">leetcode-416</a>
             
         </section>
 
